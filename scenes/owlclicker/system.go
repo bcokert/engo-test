@@ -3,7 +3,8 @@ package owlclicker
 import (
 	"math/rand"
 
-	"github.com/bcokert/engo-test/systems"
+	"github.com/bcokert/engo-test/owls"
+	"github.com/bcokert/engo-test/physics"
 
 	"engo.io/ecs"
 	"engo.io/engo"
@@ -66,9 +67,9 @@ func (s *system) Update(dt float32) {
 				targetSystem.Add(owl.BasicEntity(), owl.RenderComponent(), owl.SpaceComponent())
 			case *common.MouseSystem:
 				targetSystem.Add(owl.BasicEntity(), owl.MouseComponent(), owl.SpaceComponent(), nil)
-			case *systems.OwlSystem:
+			case *owls.OwlSystem:
 				targetSystem.Add(owl)
-			case *systems.ParticlePhysicsSystem:
+			case *physics.ParticlePhysicsSystem:
 				targetSystem.Add(owl)
 			}
 		}

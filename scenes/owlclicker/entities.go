@@ -4,15 +4,16 @@ import (
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
-	"github.com/bcokert/engo-test/systems"
+	"github.com/bcokert/engo-test/owls"
+	"github.com/bcokert/engo-test/physics"
 )
 
 type owl struct {
 	basicEntity          ecs.BasicEntity
 	renderComponent      common.RenderComponent
 	mouseComponent       common.MouseComponent
-	particleComponent    systems.ParticleComponent
-	basicHealthComponent systems.BasicHealthComponent
+	particleComponent    physics.ParticleComponent
+	basicHealthComponent owls.BasicHealthComponent
 }
 
 func (o *owl) BasicEntity() *ecs.BasicEntity {
@@ -27,7 +28,7 @@ func (o *owl) MouseComponent() *common.MouseComponent {
 	return &o.mouseComponent
 }
 
-func (o *owl) ParticleComponent() *systems.ParticleComponent {
+func (o *owl) ParticleComponent() *physics.ParticleComponent {
 	return &o.particleComponent
 }
 
@@ -35,7 +36,7 @@ func (o *owl) SpaceComponent() *common.SpaceComponent {
 	return &o.particleComponent.SpaceComponent
 }
 
-func (o *owl) BasicHealthComponent() *systems.BasicHealthComponent {
+func (o *owl) BasicHealthComponent() *owls.BasicHealthComponent {
 	return &o.basicHealthComponent
 }
 
@@ -47,14 +48,14 @@ func newOwl(position, velocity engo.Point, texture *common.Texture, scale, mass 
 			Scale:    engo.Point{scale, scale},
 		},
 		mouseComponent: common.MouseComponent{},
-		particleComponent: systems.NewParticleComponent(
+		particleComponent: physics.NewParticleComponent(
 			texture.Width()*scale,
 			texture.Height()*scale,
 			mass,
 			position,
 			velocity,
 		),
-		basicHealthComponent: systems.BasicHealthComponent{
+		basicHealthComponent: owls.BasicHealthComponent{
 			Health:    health,
 			MaxHealth: health,
 		},

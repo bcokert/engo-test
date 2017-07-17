@@ -5,7 +5,8 @@ import (
 	"engo.io/engo"
 	"engo.io/engo/common"
 	"github.com/bcokert/engo-test/logging"
-	"github.com/bcokert/engo-test/systems"
+	"github.com/bcokert/engo-test/owls"
+	"github.com/bcokert/engo-test/physics"
 )
 
 type Scene struct {
@@ -29,18 +30,21 @@ func (s *Scene) Setup(world *ecs.World) {
 		panic("Error loading texture: " + err.Error())
 	}
 
+	// Priority -1000
 	world.AddSystem(&common.RenderSystem{})
+
+	// Priority 100
 	world.AddSystem(&common.MouseSystem{})
-	world.AddSystem(&systems.ParticlePhysicsSystem{
-		TopLeft:        engo.Point{0, 0},
-		BottomRight:    engo.Point{engo.GameWidth(), engo.GameHeight()},
-		Gravity:        engo.Point{0, 2},
-		DampingFactor:  0.99,
-		SimulationRate: 60,
-		Log:            s.Log,
-	})
-	world.AddSystem(&systems.OwlSystem{
+
+	// Priority 0
+	world.AddSystem(&owls.OwlSystem{
 		Log: s.Log,
 	})
 	world.AddSystem(&system{OwlTexture: owlTexture, Seed: 312, OwlInterval: 3})
+
+	// Priority -100
+	world.AddSystem(&physics.ParticlePhysicsSystem{
+		ParticleEngine: physics.NewParticleEngine(engo.Point{0, 2}, 0.99, s.Log),
+		SimulationRate: 60,
+	})
 }

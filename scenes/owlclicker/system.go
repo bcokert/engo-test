@@ -57,10 +57,13 @@ func (s *system) Update(dt float32) {
 		scale := s.rand.Float32()/2 + 0.25
 		maxWidth := int(engo.GameWidth() - s.OwlTexture.Width()*scale)
 		maxHeight := int(engo.GameHeight() - s.OwlTexture.Height()*scale)
-		position := engo.Point{float32(s.rand.Intn(maxWidth)), float32(s.rand.Intn(maxHeight))}
-		velocity := engo.Point{s.rand.Float32()*20 - 5, s.rand.Float32()*40 - 20}
+		position := engo.Point{
+			float32(s.rand.Intn(maxWidth-int(s.OwlTexture.Width()))) + s.OwlTexture.Width(),
+			float32(s.rand.Intn(maxHeight-int(s.OwlTexture.Height()))) + s.OwlTexture.Height(),
+		}
+		velocity := engo.Point{s.rand.Float32()*200 - 100, s.rand.Float32()*100 - 50}
 
-		owl := newOwl(position, velocity, s.OwlTexture, scale, 1, float64(s.rand.Intn(4)+1))
+		owl := newOwl(position, velocity, s.OwlTexture, scale, 1, float32(s.rand.Intn(5)+2))
 		s.entities[owl.BasicEntity().ID()] = owl
 
 		for _, worldSystem := range s.world.Systems() {

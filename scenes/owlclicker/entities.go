@@ -14,6 +14,7 @@ type owl struct {
 	mouseComponent       common.MouseComponent
 	particleComponent    physics.ParticleComponent
 	basicHealthComponent owls.BasicHealthComponent
+	healthBarComponent   owls.HealthBarComponent
 }
 
 func (o *owl) BasicEntity() *ecs.BasicEntity {
@@ -40,7 +41,11 @@ func (o *owl) BasicHealthComponent() *owls.BasicHealthComponent {
 	return &o.basicHealthComponent
 }
 
-func newOwl(position, velocity engo.Point, texture *common.Texture, scale, mass float32, health float64) *owl {
+func (o *owl) HealthBarComponent() *owls.HealthBarComponent {
+	return &o.healthBarComponent
+}
+
+func newOwl(position, velocity engo.Point, texture *common.Texture, scale, mass, health float32) *owl {
 	return &owl{
 		basicEntity: ecs.NewBasic(),
 		renderComponent: common.RenderComponent{
@@ -59,5 +64,6 @@ func newOwl(position, velocity engo.Point, texture *common.Texture, scale, mass 
 			Health:    health,
 			MaxHealth: health,
 		},
+		healthBarComponent: owls.NewHealthBarComponent(texture.Width()*scale, 6, position),
 	}
 }

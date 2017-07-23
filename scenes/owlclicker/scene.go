@@ -44,15 +44,17 @@ func (s *Scene) Setup(world *ecs.World) {
 	world.AddSystem(&owls.OwlSystem{
 		Log: s.Log,
 	})
-	world.AddSystem(&system{OwlTexture: owlTexture, Seed: 312, OwlInterval: 1, log: s.Log})
+	world.AddSystem(&system{OwlTexture: owlTexture, Seed: 312, OwlInterval: 2, log: s.Log})
 
 	// Priority -100
 	world.AddSystem(&physics.ParticlePhysicsSystem{
 		ParticleEngine: physics.NewParticleEngine(
-			engo.Point{0, 100},
+			engo.Point{0, 150},
 			0.99,
 			[]physics.Wall{
 				physics.Wall{engo.Point{0, engo.GameHeight()}, engo.Point{engo.GameWidth(), engo.GameHeight()}},
+				physics.Wall{engo.Point{0, 0}, engo.Point{0, engo.GameHeight()}},
+				physics.Wall{engo.Point{engo.GameWidth(), 0}, engo.Point{engo.GameWidth(), engo.GameHeight()}},
 			},
 			s.Log),
 		SimulationRate: 60,

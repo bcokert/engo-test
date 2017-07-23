@@ -2,6 +2,7 @@ package physics
 
 import (
 	"engo.io/ecs"
+	"github.com/bcokert/engo-test/metrics"
 )
 
 const (
@@ -59,6 +60,7 @@ func (s *ParticlePhysicsSystem) Update(dt float32) {
 	// Simulate physics in steps until we've caught up to real time or hit the limit
 	// Any remainder less than the simulationStep can be interpolated by the renderer
 	for i := 0; s.simulationAcc > s.simulationStep && i < MaxPhysicsIterations; i++ {
+		defer metrics.Timed(metrics.Func("Engine.Total"))
 		s.ParticleEngine.Integrate(s.simulationStep)
 		s.ParticleEngine.ResolveCollisions()
 	}

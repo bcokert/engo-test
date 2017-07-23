@@ -5,9 +5,11 @@ import (
 
 	"engo.io/engo"
 	"github.com/bcokert/engo-test/logging"
+	"github.com/bcokert/engo-test/metrics"
 )
 
 func (e *ParticleEngine) Integrate(dt float32) {
+	defer metrics.Timed(metrics.Func("Engine.Integrate"))
 	for _, p := range e.ParticleRegistry.particles {
 		body := p.ParticleComponent()
 

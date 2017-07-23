@@ -3,6 +3,7 @@ package physics
 import (
 	"engo.io/engo"
 	"github.com/bcokert/engo-test/logging"
+	"github.com/bcokert/engo-test/metrics"
 )
 
 type Wall struct {
@@ -20,6 +21,7 @@ type ParticleCollisionManifold struct {
 func (e *ParticleEngine) ResolveCollisions() {
 	collisions := e.detectCollisions()
 
+	defer metrics.Timed(metrics.Func("Engine.ResolveCollisions"))
 	for _, collision := range collisions {
 		restitution := collision.a.ParticleComponent().Restitution
 		if collision.b != nil {
@@ -72,6 +74,7 @@ func (e *ParticleEngine) ResolveCollisions() {
 }
 
 func (e *ParticleEngine) detectCollisions() []*ParticleCollisionManifold {
+	defer metrics.Timed(metrics.Func("Engine.detectCollisions"))
 	collisions := make([]*ParticleCollisionManifold, 0, len(e.ParticleRegistry.particles))
 
 	// Detect collisions with walls
@@ -113,7 +116,7 @@ func (e *ParticleEngine) detectCollisions() []*ParticleCollisionManifold {
 				}
 				collisions = append(collisions, &manifold)
 
-				e.log.Info("Detected collision", logging.F{"wall": wall, "manifold": manifold})
+				e.log.Debug("Detected collision", logging.F{"wall": wall, "manifold": manifold})
 			}
 		}
 	}

@@ -1,10 +1,14 @@
 package owlclicker
 
 import (
+	"fmt"
+	"time"
+
 	"engo.io/ecs"
 	"engo.io/engo"
 	"engo.io/engo/common"
 	"github.com/bcokert/engo-test/logging"
+	"github.com/bcokert/engo-test/metrics"
 	"github.com/bcokert/engo-test/owls"
 	"github.com/bcokert/engo-test/physics"
 )
@@ -40,7 +44,7 @@ func (s *Scene) Setup(world *ecs.World) {
 	world.AddSystem(&owls.OwlSystem{
 		Log: s.Log,
 	})
-	world.AddSystem(&system{OwlTexture: owlTexture, Seed: 312, OwlInterval: 1})
+	world.AddSystem(&system{OwlTexture: owlTexture, Seed: 312, OwlInterval: 1, log: s.Log})
 
 	// Priority -100
 	world.AddSystem(&physics.ParticlePhysicsSystem{
@@ -53,4 +57,18 @@ func (s *Scene) Setup(world *ecs.World) {
 			s.Log),
 		SimulationRate: 60,
 	})
+}
+
+// Exit is run right before closing the game
+func (s *Scene) Exit() {
+	now := time.Now().Local()
+	path := fmt.Sprintf("functionmetrics/owlicker.%s.metrics", now.Format("2006-01-02-15-04-05"))
+	err := metrics.Output(path)
+
+	if err != nil {
+		s.Log.Error("An error ocurred writing the metrics file", logging.F{"error": err, "path": path})
+		return
+	}
+
+	s.Log.Info("Created metrics file", logging.F{"path": path})
 }

@@ -3,6 +3,7 @@ package owlclicker
 import (
 	"math/rand"
 
+	"github.com/bcokert/engo-test/logging"
 	"github.com/bcokert/engo-test/owls"
 	"github.com/bcokert/engo-test/physics"
 
@@ -16,6 +17,7 @@ type system struct {
 	Seed          int64
 	OwlTexture    *common.Texture
 	OwlInterval   float32
+	log           logging.Logger
 	timeToNextOwl float32
 	entities      map[uint64]*owl
 	rand          *rand.Rand

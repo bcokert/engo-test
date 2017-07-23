@@ -2,6 +2,7 @@ package physics
 
 import (
 	"engo.io/ecs"
+	"engo.io/engo"
 	"github.com/bcokert/engo-test/metrics"
 )
 
@@ -56,6 +57,29 @@ func (s *ParticlePhysicsSystem) New(world *ecs.World) {
 // maximum number times, which will have an effect similar to time slowing down
 func (s *ParticlePhysicsSystem) Update(dt float32) {
 	s.simulationAcc += dt
+
+	// A few tools to help demo the physics
+	if btn := engo.Input.Button("shakeitup"); btn.JustPressed() {
+		for _, e := range s.ParticleEngine.ParticleRegistry.particles {
+			velocity := engo.Point{s.ParticleEngine.rand.Float32()*800 - 400, s.ParticleEngine.rand.Float32()*800 - 400}
+			e.ParticleComponent().Velocity = velocity
+		}
+	}
+	if btn := engo.Input.Button("freeze"); btn.JustPressed() {
+		for _, e := range s.ParticleEngine.ParticleRegistry.particles {
+			e.ParticleComponent().Velocity = engo.Point{0, 0}
+		}
+	}
+	if btn := engo.Input.Button("faster"); btn.JustPressed() {
+		for _, e := range s.ParticleEngine.ParticleRegistry.particles {
+			e.ParticleComponent().Velocity.MultiplyScalar(1.3)
+		}
+	}
+	if btn := engo.Input.Button("slower"); btn.JustPressed() {
+		for _, e := range s.ParticleEngine.ParticleRegistry.particles {
+			e.ParticleComponent().Velocity.MultiplyScalar(0.8)
+		}
+	}
 
 	// Simulate physics in steps until we've caught up to real time or hit the limit
 	// Any remainder less than the simulationStep can be interpolated by the renderer

@@ -37,6 +37,6 @@ func NewParticleComponent(width, height, mass float32, position, velocity engo.P
 		},
 		Velocity:         velocity,
 		ForceAccumulator: engo.Point{},
-		Restitution:      0.9,
+		Restitution:      0.7,
 	}
 }

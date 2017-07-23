@@ -1,6 +1,8 @@
 package physics
 
 import (
+	"math/rand"
+
 	"engo.io/engo"
 	"github.com/bcokert/engo-test/logging"
 )
@@ -10,10 +12,11 @@ type ParticleEngine struct {
 	dampingFactor     float32        // the damping factor that reduces the velocity slightly (sort of like an aerodynamic impulse due to drag) but is primarily for numerical stability
 	log               logging.Logger // engine wide logger
 	walls             []Wall
-	*ParticleRegistry // stores all particles and efficiently finds them for the collision detector
+	*ParticleRegistry            // stores all particles and efficiently finds them for the collision detector
+	rand              *rand.Rand // used when random numbers are needed
 }
 
-func NewParticleEngine(gravity engo.Point, dampingFactor float32, walls []Wall, logger logging.Logger) *ParticleEngine {
+func NewParticleEngine(gravity engo.Point, dampingFactor float32, seed int64, walls []Wall, logger logging.Logger) *ParticleEngine {
 	if logger == nil {
 		logger = logging.NewDefaultLogger(logging.INFO)
 	}
@@ -37,5 +40,6 @@ func NewParticleEngine(gravity engo.Point, dampingFactor float32, walls []Wall, 
 			log:       logger,
 			particles: map[uint64]particle{},
 		},
+		rand: rand.New(rand.NewSource(seed)),
 	}
 }

@@ -61,7 +61,7 @@ func (s *system) Update(dt float32) {
 			float32(s.rand.Intn(maxWidth-int(s.OwlTexture.Width()))) + s.OwlTexture.Width(),
 			float32(s.rand.Intn(maxHeight-int(s.OwlTexture.Height()))) + s.OwlTexture.Height(),
 		}
-		velocity := engo.Point{s.rand.Float32()*200 - 100, s.rand.Float32()*100 - 50}
+		velocity := engo.Point{s.rand.Float32()*400 - 200, s.rand.Float32()*200 - 100}
 
 		owl := newOwl(position, velocity, s.OwlTexture, scale, 1, float32(s.rand.Intn(5)+2))
 		s.entities[owl.BasicEntity().ID()] = owl

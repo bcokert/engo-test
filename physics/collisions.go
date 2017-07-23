@@ -86,9 +86,14 @@ func (e *ParticleEngine) detectCollisions() []*ParticleCollisionManifold {
 		if height > width {
 			r = height
 		}
+		r = r / 2
 
 		for _, wall := range e.walls {
+			// Set P to the center of the entity
 			P := body.SpaceComponent.Position
+			P.X += width / 2
+			P.Y += height / 2
+
 			L := wall.P1         // L = P1
 			L.Subtract(wall.P2)  // L = P1 - P2
 			L, _ = L.Normalize() // L = (P1 - P2).Normalize()

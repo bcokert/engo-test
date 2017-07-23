@@ -127,6 +127,15 @@ func (s *OwlSystem) Update(dt float32) {
 			}
 		}
 
+		// remove owls that have escaped the screen
+		p := owl.SpaceComponent().Position
+		if p.X < -100 || p.X > engo.GameWidth()+100 || p.Y < -100 || p.Y > engo.GameHeight()+100 {
+			s.world.RemoveEntity(*owl.BasicEntity())
+			s.world.RemoveEntity(owl.HealthBarComponent().emptyBasic)
+			s.world.RemoveEntity(owl.HealthBarComponent().fullBasic)
+			continue
+		}
+
 		// update healthbar based on health
 		percentHealthy := health.Health / health.MaxHealth
 		healthbar.Update(percentHealthy, owl.SpaceComponent().Position)

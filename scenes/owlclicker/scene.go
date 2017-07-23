@@ -51,7 +51,9 @@ func (s *Scene) Setup(world *ecs.World) {
 		ParticleEngine: physics.NewParticleEngine(
 			engo.Point{0, 150},
 			0.99,
+			312,
 			[]physics.Wall{
+				physics.Wall{engo.Point{0, 0}, engo.Point{engo.GameWidth(), 0}},
 				physics.Wall{engo.Point{0, engo.GameHeight()}, engo.Point{engo.GameWidth(), engo.GameHeight()}},
 				physics.Wall{engo.Point{0, 0}, engo.Point{0, engo.GameHeight()}},
 				physics.Wall{engo.Point{engo.GameWidth(), 0}, engo.Point{engo.GameWidth(), engo.GameHeight()}},
@@ -59,6 +61,12 @@ func (s *Scene) Setup(world *ecs.World) {
 			s.Log),
 		SimulationRate: 60,
 	})
+
+	// Global Inputs
+	engo.Input.RegisterButton("shakeitup", engo.Space)
+	engo.Input.RegisterButton("freeze", engo.Enter)
+	engo.Input.RegisterButton("faster", engo.Equals)
+	engo.Input.RegisterButton("slower", engo.Dash)
 }
 
 // Exit is run right before closing the game

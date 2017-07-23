@@ -18,18 +18,16 @@ func (e *ParticleEngine) Integrate(dt float32) {
 		// Calculate the net force on the object
 		var netF engo.Point
 
-		// Environment forces
-		netF.Add(e.gravity)
-
 		// Add other external forces on the object, then clear them
 		netF.Add(body.ForceAccumulator)
-		body.ForceAccumulator.Set(0, 0)
 
 		// Acceleration from net force
 		// a = F/m
 		acceleration := netF
 		acceleration.MultiplyScalar(body.InvMass)
-		e.log.Debug("Integration Forces", logging.F{"gravity": e.gravity, "externalforces": body.ForceAccumulator, "netF": netF, "acceleration": acceleration})
+
+		// Add gravity, which is an acceleration, not a force (for speed)
+		acceleration.Add(e.gravity)
 
 		// Update the position
 		// p = p + v*t + 0.5*a*t^2
@@ -48,5 +46,8 @@ func (e *ParticleEngine) Integrate(dt float32) {
 		a.MultiplyScalar(dt)                   // a*t
 		body.Velocity.Add(a)                   // v = v*damp^t + a*t
 		e.log.Debug("After Integration", logging.F{"id": p.BasicEntity().ID(), "particleComponent": p.ParticleComponent()})
+
+		// Reset the force accumulator
+		body.ForceAccumulator.Set(0, 0)
 	}
 }

@@ -49,7 +49,7 @@ func (s *Scene) Setup(world *ecs.World) {
 	// Priority -100
 	world.AddSystem(&physics.ParticlePhysicsSystem{
 		ParticleEngine: physics.NewParticleEngine(
-			engo.Point{0, 2},
+			engo.Point{0, 100},
 			0.99,
 			[]physics.Wall{
 				physics.Wall{engo.Point{0, engo.GameHeight()}, engo.Point{engo.GameWidth(), engo.GameHeight()}},

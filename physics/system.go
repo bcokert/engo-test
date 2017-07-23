@@ -61,6 +61,7 @@ func (s *ParticlePhysicsSystem) Update(dt float32) {
 	// Any remainder less than the simulationStep can be interpolated by the renderer
 	for i := 0; s.simulationAcc > s.simulationStep && i < MaxPhysicsIterations; i++ {
 		defer metrics.Timed(metrics.Func("Engine.Total"))
+		s.simulationAcc -= s.simulationStep
 		s.ParticleEngine.Integrate(s.simulationStep)
 		s.ParticleEngine.ResolveCollisions()
 	}

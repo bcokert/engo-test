@@ -1,0 +1,9 @@
+Registry output for 2017-07-23 12:42:54
+
+                   Metric Name    Count(##)      Avg(ns)      Max(ns)      Min(ns)
+
+      Engine.ResolveCollisions         2112          255         4108            0
+                  Engine.Total         2112        81711       448696         2815
+                  Registry.Add           35         8755        37886         4175
+              Engine.Integrate         2112        72305       390363         1921
+       Engine.detectCollisions         2112         5123        76276          348

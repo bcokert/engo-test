@@ -11,8 +11,8 @@ import (
 func main() {
 	options := engo.RunOptions{
 		Title:  "Owl Game",
-		Width:  500, // pixels
-		Height: 500, // pixels
+		Width:  800, // pixels
+		Height: 600, // pixels
 	}
 
 	var logLevel logging.LOGLEVEL
